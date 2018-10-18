@@ -7,6 +7,7 @@ class Api::PeopleController < ApplicationController
 
   def show
     @person = Person.find_by(id: params["id"])
+    #@updated_at = @person.updated_at 
     render "show.json.jbuilder"
   end 
 
@@ -14,7 +15,9 @@ class Api::PeopleController < ApplicationController
     @person = Person.new(
       first_name: params["first"],
       last_name: params["last"],
-      phone_number: params["phone_number"])
+      middle_name: params["middle"],
+      phone_number: params["phone_number"],
+      bio: params["bio"])
     @person.save
 
     render "show.json.jbuilder" 
@@ -25,7 +28,9 @@ class Api::PeopleController < ApplicationController
     @person.update(
       first_name: params["first"] || @person.first_name,
       last_name: params["last"] || @person.last_name,
-      phone_number: params["phone_number"] || @person.phone_number
+      middle_name: params["middle"] || @person.middle_name,
+      phone_number: params["phone_number"] || @person.phone_number,
+      bio: params["bio"] || @person.bio
       )
 
     render "show.json.jbuilder"
