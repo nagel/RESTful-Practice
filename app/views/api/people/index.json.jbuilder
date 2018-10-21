@@ -4,5 +4,6 @@ json.array! @people.each do |people|
   json.middle_name people.middle_name
   json.last_name people.last_name
   json.phone people.phone_number
-  json.bio people.biomid_
+  json.email people.email
+  json.bio people.bio
 end

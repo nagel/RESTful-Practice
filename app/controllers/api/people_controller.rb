@@ -2,6 +2,19 @@ class Api::PeopleController < ApplicationController
 
   def index
     @people = Person.all
+
+    #allows user to search for a specific first name
+    @first_name_search = params["fname"]
+    @search = params["search"]
+
+    if @first_name_search
+      @people = @people.where("first_name ILIKE ?", "#{@first_name_search}")
+    end 
+
+    if @search
+      @people = @people.where("first_name LIKE ? OR last_name LIKE ?", "@{search}" "@{search}")
+    end
+
     render "index.json.jbuilder"
   end 
 
@@ -17,11 +30,16 @@ class Api::PeopleController < ApplicationController
       last_name: params["last"],
       middle_name: params["middle"],
       phone_number: params["phone_number"],
+      email: params["email"],
       bio: params["bio"])
-    @person.save
 
-    render "show.json.jbuilder" 
-  end 
+    if @person.save
+      render "show.json.jbuilder" 
+    else
+      render json: {message: @person.errors}, status: 404
+    end
+
+  end
 
   def update
     @person = Person.find_by(id: params["id"])
@@ -30,10 +48,16 @@ class Api::PeopleController < ApplicationController
       last_name: params["last"] || @person.last_name,
       middle_name: params["middle"] || @person.middle_name,
       phone_number: params["phone_number"] || @person.phone_number,
+      email: params["email"] || @person.email,
       bio: params["bio"] || @person.bio
       )
 
-    render "show.json.jbuilder"
+    if @person.save
+      render "show.json.jbuilder" 
+    else
+      render json: {message: @person.errors}, status: 404
+    end 
+
   end 
 
   def delete
