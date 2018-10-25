@@ -6,5 +6,9 @@ Rails.application.routes.draw do
     post "/person" => "people#create"
     patch "/person/:id" => "people#update"
     delete "/person/:id" => "people#delete"
+
+    post "/user" => "users#create"
+
+    post "/sessions" => "sessions#create"
   end 
 end

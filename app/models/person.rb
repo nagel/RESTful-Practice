@@ -5,6 +5,8 @@ class Person < ApplicationRecord
   validates :phone_number, uniqueness: true
   validates :email, uniqueness: true
 
+  belongs_to :user
+
 
   def friendly_updated_at
     self.updated_at.strftime("%b %e, %l:%M %p")

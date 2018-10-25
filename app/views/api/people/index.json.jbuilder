@@ -6,4 +6,5 @@ json.array! @people.each do |people|
   json.phone people.phone_number
   json.email people.email
   json.bio people.bio
+  json.current_user_info current_user.email
 end

@@ -1,7 +1,7 @@
 class Api::PeopleController < ApplicationController
 
   def index
-    @people = Person.all
+    @people = Person.where(user_id: current_user.id) #Will only query for users assigned to their user_id
 
     #allows user to search for a specific first name
     @first_name_search = params["fname"]
@@ -15,7 +15,11 @@ class Api::PeopleController < ApplicationController
       @people = @people.where("first_name LIKE ? OR last_name LIKE ?", "@{search}" "@{search}")
     end
 
-    render "index.json.jbuilder"
+    if current_user
+      render "index.json.jbuilder"
+    else
+      render json: {message: "PLEASE LOGIN!"}
+    end 
   end 
 
   def show
